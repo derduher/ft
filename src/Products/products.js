@@ -9,7 +9,7 @@ function ProductItem ({
   bodyShape
 }) {
   return <li className='product' key={productNo}>{
-    Array.from(new Set(images)).map(i => <img key={productNo + i} src={i} />)
+    <img key={productNo + images[0]} src={images[0]} />
     }<Link to={'/product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
   </li>
 }

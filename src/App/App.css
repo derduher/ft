@@ -29,8 +29,17 @@
   grid-gap: 10px;
 }
 
+ul.products {
+  list-style-type: none;
+  margin: 0;
+}
+
 .product img {
   width: 100%;
+}
+
+.product__name {
+  display: block;
 }
 
 @keyframes App-logo-spin {
