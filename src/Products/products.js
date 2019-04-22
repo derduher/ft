@@ -1,22 +1,20 @@
 import React, { Component } from 'react'
-import './App.css'
-import products from './products.json'
-const seriesById = {}
-const productById = {}
-const seriesTypes = [{seriesId: ''}]
-const productTypes = [{prodTypeId: ''}]
-products.documents.forEach(({series, seriesId, productType, prodTypeId}) => {
-  if (!seriesById[seriesId]) {
-    seriesById[seriesId] = true
-    seriesTypes.push({seriesId, series})
-  }
-  if (!productById[prodTypeId]) {
-    productById[prodTypeId] = true
-    productTypes.push({prodTypeId, productType})
-  }
-})
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 
-class App extends Component {
+function ProductItem ({
+  productNo,
+  images,
+  productDisplayName_en,
+  bodyShape
+}) {
+  return <li className='product' key={productNo}>{
+    Array.from(new Set(images)).map(i => <img key={productNo + i} src={i} />)
+    }<Link to={'/product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
+  </li>
+}
+
+export class Products extends Component {
   state = {
     series: '',
     productType: ''
@@ -24,14 +22,19 @@ class App extends Component {
   onSeriesFilterChange = e => this.setState({series: e.target.value})
   onProductFilterChange = e => this.setState({productType: e.target.value})
   activeProducts () {
-    return products.documents.filter(doc => 
+    return this.props.products.filter(doc =>
       (!this.state.series || doc.seriesId === this.state.series)
       && (!this.state.productType || doc.prodTypeId === this.state.productType))
   }
+
   render () {
     const activeProducts = this.activeProducts()
+    const {
+      seriesTypes,
+      productTypes
+    } = this.props
     return (
-      <div className='App'>
+      <div className='products-container'>
         <span>{activeProducts.length}</span>
         <select onChange={this.onSeriesFilterChange}>
           {
@@ -45,13 +48,7 @@ class App extends Component {
         </select>
         <ul className='products'>
           {
-            activeProducts.map(doc => {
-              const uniq = Array.from(new Set(doc.images))
-              return <li className='product' key={doc.productNo}>{
-                uniq.map(i => <img key={doc.productNo + i} src={i} />)
-              }<span className='product__name'>{ doc.productDisplayName_en }</span>
-              </li>
-            })
+            activeProducts.map(ProductItem)
           }
         </ul>
       </div>
@@ -59,4 +56,8 @@ class App extends Component {
   }
 }
 
-export default App
+function mapStateToProps ({ seriesTypes, productTypes, products }, ownProps) {
+  return { seriesTypes, productTypes, products }
+}
+
+export default connect(mapStateToProps)(Products)
