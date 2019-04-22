@@ -9,8 +9,8 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path={process.env.PUBLIC_URL} component={Products} />
-          <Route path={process.env.PUBLIC_URL + 'product/:id'} component={Product} />
+          <Route exact path={process.env.PUBLIC_URL + '/'} component={Products} />
+          <Route path={process.env.PUBLIC_URL + '/product/:id'} component={Product} />
         </Switch>
       </Router>
     )

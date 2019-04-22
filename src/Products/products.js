@@ -10,7 +10,7 @@ function ProductItem ({
 }) {
   return <li className='product' key={productNo}>{
     <img key={productNo + images[0]} src={images[0]} />
-    }<Link to={process.env.PUBLIC_URL + 'product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
+    }<Link to={process.env.PUBLIC_URL + '/product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
   </li>
 }
 
