@@ -8,9 +8,9 @@ function ProductItem ({
   productDisplayName_en,
   bodyShape
 }) {
-  return <li className='product' key={productNo}>{
-    <img key={productNo + images[0]} src={images[0]} />
-    }<Link to={process.env.PUBLIC_URL + '/product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
+  return <li className='product' key={productNo}>
+    <Link to={process.env.PUBLIC_URL + '/product/' + productNo} className='product__img'><img key={productNo + images[0]} src={images[0]} /></Link>
+    <Link to={process.env.PUBLIC_URL + '/product/' + productNo} className='product__name'>{ productDisplayName_en || bodyShape || 'no name' }</Link>
   </li>
 }
 
@@ -35,17 +35,20 @@ export class Products extends Component {
     } = this.props
     return (
       <div className='products-container'>
-        <span>{activeProducts.length}</span>
-        <select onChange={this.onSeriesFilterChange}>
-          {
-            seriesTypes.map(({seriesId, series}) => <option key={seriesId} value={seriesId}>{series}</option>)
-          }
-        </select>
-        <select onChange={this.onProductFilterChange}>
-          {
-            productTypes.map(({prodTypeId, productType}) => <option key={prodTypeId} value={prodTypeId}>{productType}</option>)
-          }
-        </select>
+        <div className='sidebar'>
+          <label htmlFor='seriesFilter'>Series Type</label>
+          <select id='seriesFilter' onChange={this.onSeriesFilterChange}>
+            {
+              seriesTypes.map(({seriesId, series}) => <option key={seriesId} value={seriesId}>{series}</option>)
+            }
+          </select>
+          <label htmlFor='productFilter'>Product Type</label>
+          <select id='productFilter' onChange={this.onProductFilterChange}>
+            {
+              productTypes.map(({prodTypeId, productType}) => <option key={prodTypeId} value={prodTypeId}>{productType}</option>)
+            }
+          </select>
+        </div>
         <ul className='products'>
           {
             activeProducts.map(ProductItem)
